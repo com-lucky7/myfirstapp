@@ -3,22 +3,18 @@ import pandas as pd
 import altair as alt
 import os
 
-# 데이터 불러오기 함수
+# 데이터 불러오기
 @st.cache_data
 def load_data():
     local_file = "countriesMBTI_16types.csv"
-    
     if os.path.exists(local_file):
-        df = pd.read_csv(local_file)
-        return df
+        return pd.read_csv(local_file)
     else:
         st.error("❌ 데이터 파일(countriesMBTI_16types.csv)이 앱 폴더에 없습니다.")
         return pd.DataFrame()
 
-# 데이터 로딩
 df = load_data()
 
-# 데이터가 존재할 때만 실행
 if not df.empty:
     st.set_page_config(page_title="국가별 MBTI Top3", page_icon="🌍", layout="centered")
 
@@ -40,8 +36,8 @@ if not df.empty:
         "비율": top3.values
     })
 
-    # 시각화 (Altair)
-    chart = alt.Chart(top3_df).mark_bar(cornerRadiusTop=5).encode(
+    # 시각화 (✅ 안정적으로 작동)
+    chart = alt.Chart(top3_df).mark_bar().encode(
         x=alt.X("MBTI", sort="-y"),
         y=alt.Y("비율", title="비율"),
         color=alt.Color("MBTI", legend=None)
@@ -53,6 +49,5 @@ if not df.empty:
 
     st.altair_chart(chart, use_container_width=True)
 
-    # 수치 데이터 보기
     with st.expander("📊 수치로 보기"):
         st.dataframe(top3_df.set_index("MBTI").style.format({"비율": "{:.2%}"}))
