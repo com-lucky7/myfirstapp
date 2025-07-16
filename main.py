@@ -41,4 +41,3 @@ if selected_mbti:
 
 # 푸터
 st.markdown("<small style='color: gray;'>디즈니 공주 MBTI 추천은 재미로 보세요 😊</small>", unsafe_allow_html=True)
-
